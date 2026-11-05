@@ -1,0 +1,12 @@
+# macOS
+.DS_Store
+
+# Word / Office lock files
+.~*
+~$*
+
+# Duplicate archive of the portrait folder
+红嫁衣角色立绘.zip
+
+# Python cache
+__pycache__/
