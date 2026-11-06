@@ -81,6 +81,8 @@
 38. 2026-11-06 What If 按用户截图修改（D-L7）：Debate 01/02 改红嫁衣的内容；Debate 03 移到结尾共用页（`renderMethod`）。标注图上写的是 “Education backgrouod”（拼写错误），用户消息写的是 educational background，这里用 “Educational background”。已测试：红嫁衣和 Mohini 的 What If、共用页的 Debate 03、刷新恢复、旧存档的选项值回到默认项；控制台无报错。verify：剧情文字 256/256 通过，19 FAIL / 8 WARN；新增 2 项检查。备份文件为 scratchpad/index.before-whatif-edit.html。
 39. 2026-11-06 用户说“都要改”，处理了 What If 的后续：Mohini 的 Debate 01 和红嫁衣相同；“Who knows?” 大写；开头页和 What If 页改为 “two questions”；页底说明只在 Mohini 的 What If 上显示；Debate 03 inter 的红嫁衣文字改为 “money and education”。Debate 03 仍保留在结尾共用页（图 5 的批注）。浏览器里逐项检查了两条线，控制台无报错。verify：剧情文字 256/256 通过，19 FAIL / 8 WARN。备份文件为 scratchpad/index.before-whatif-followups.html。
 40. 2026-11-06 红嫁衣开场（D-F16）：新增 `opening` 页。已测试：角色页点进来后全屏（窗口大小 = 画面大小），5 秒显现；按空格后淡出，由黑场接 Prologue；点击也能进入 Prologue；刷新后停在开场页；控制台无报错。窗口接近正方形时图片两侧会被裁掉。画面上没有点击提示（用户要求不显示文字）。verify：剧情文字 256/256 通过，19 FAIL / 7 WARN（Opening 那条 WARN 已消除）。备份文件为 scratchpad/index.before-opening-image.html。
+41. 2026-11-06 上传 GitHub：main 上多了用户网页上传的 543bf7f（旧版 index.html，和 monst(h)er.html 相同），已合并并保留本地版本。提交 848ee98 + 合并 15e07e4，推送成功。远端不再有 monst(h)er.html。这条记录本身还没有提交。
+42. 2026-11-06 GitHub Pages 发布失败：15e07e4 的 build 成功（Node.js 20 那条只是警告），deploy 在 10 分钟后报 “Timeout reached, aborting!”，线上仍是 11 月 5 日的旧版。原因未确认，怀疑和站点变大有关。
 
 ## 待解决问题（需要用户决策）
 - [x] **Q1 剧本升级到 V3（剧情文字部分）**：2026-11-04 已同步；理论框见 Q3。

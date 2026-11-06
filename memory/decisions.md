@@ -60,7 +60,7 @@
 - **D-A7 嫁衣立绘**（2026-11-06）：从 Scene 5 上轿开始，女主用 `女主_嫁衣定稿_半身.png`；祠堂里的 Old Woman 用 `祠堂老妇人_半身.png`，Scene 2 村里的 Old Woman 用 `老妇人_半身.png`。
 - **D-A4 换表情**：剧本写到情绪变化时换对应表情的立绘（例如 “Your father frowns.” 之后换成生气的父亲）。
 - **D-A5 底图**：16:9（1672×941），放在 `第一章场景/NN_描述_v1.png`，通过相对路径引用。html 必须和素材文件夹放在同一目录下。用户移动素材文件夹后，按用户决定修改 html 里的路径，不要擅自把文件挪回去（2026-11-05：`角色立绘/` 移到了 `红嫁衣角色立绘/角色立绘/`）。
-- **D-A6 版本管理**：项目使用 git，远程是私有仓库 Monica11110702/NMC5369-Gender-media-project，通过 HTTPS 推送（Classic Token 存在钥匙串里；2026-11-05）。只有在用户要求上传时才提交和推送。`.gitignore` 排除 zip 备份、Word 锁文件和 .DS_Store。
+- **D-A6 版本管理**：项目使用 git，远程是 Monica11110702/NMC5369-Gender-media-project（2026-11-05 创建时是私有，2026-11-06 查到已是公开仓库并开了 GitHub Pages：https://monica11110702.github.io/NMC5369-Gender-media-project/），通过 HTTPS 推送（Classic Token 存在钥匙串里；2026-11-05）。只有在用户要求上传时才提交和推送。`.gitignore` 排除 zip 备份、Word 锁文件和 .DS_Store。
 
 ## 五、工程流程（P）
 - **D-P1 补丁方式**：先备份 → 用 Python 脚本精确替换（断言替换处只出现一次）→ 断言用到的剧情文字在剧本中逐字存在。
