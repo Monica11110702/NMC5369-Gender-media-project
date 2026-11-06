@@ -16,7 +16,8 @@
 | Ending A/B/C | ✅ 图片序列（A：30 → 放进棺材 → 53；B：52；C：49B → 红盖头 → 放进棺材 → 47B → 棺内 → 合上棺材 → 变黑） | ✅ 与 V3 一致 |
 | Final Screen | ✅ 图片序列（55 → 54 → 56，THE END） | ✅ 正文与 V3 一致（理论框仍是 V2） |
 | 理论框（Scene 1–4、6、Final） | 可折叠框 | ⚠️ V2（Berlant & Warner），V3 改成了 Phoenix (2006) |
-| 档案页 / 选角页 / 介绍页 | 旧版，没有重做 | ⚠️ 介绍页和档案页讲的仍是 Berlant & Warner |
+| Mohini 线 | 🚧 Scene 1–3 和各自 A/B/C 结果是图片序列；Scene 4–5 和 Final Scene 仍是卡片 + 打字机 | ✅ 与 PDF 剧本一致（verify 1b） |
+| What If / 开头 / 角色页 / 结尾页 | ✅ 已换成新版（D-L6、D-L7） | 不属于剧本 |
 
 `verify.py` 基线：2026-11-04 初次运行为 **36 FAIL / 8 WARN**；同步剧情文字后为 **19 FAIL / 3 WARN**。剧情文字 185 段全部逐字对上 V3，覆盖度只差 Opening。剩下的 FAIL 全部是理论框（Q3），WARN 是 Opening、旧档案页文字和一张 3.2MB 的底图。
 
@@ -83,6 +84,16 @@
 40. 2026-11-06 红嫁衣开场（D-F16）：新增 `opening` 页。已测试：角色页点进来后全屏（窗口大小 = 画面大小），5 秒显现；按空格后淡出，由黑场接 Prologue；点击也能进入 Prologue；刷新后停在开场页；控制台无报错。窗口接近正方形时图片两侧会被裁掉。画面上没有点击提示（用户要求不显示文字）。verify：剧情文字 256/256 通过，19 FAIL / 7 WARN（Opening 那条 WARN 已消除）。备份文件为 scratchpad/index.before-opening-image.html。
 41. 2026-11-06 上传 GitHub：main 上多了用户网页上传的 543bf7f（旧版 index.html，和 monst(h)er.html 相同），已合并并保留本地版本。提交 848ee98 + 合并 15e07e4，推送成功。远端不再有 monst(h)er.html。这条记录本身还没有提交。
 42. 2026-11-06 GitHub Pages 发布失败：15e07e4 的 build 成功（Node.js 20 那条只是警告），deploy 在 10 分钟后报 “Timeout reached, aborting!”，线上仍是 11 月 5 日的旧版。原因未确认，怀疑和站点变大有关。
+43. 2026-11-06 重试发布：推送 8d7d706 后 build 和 deploy 都成功（deploy 47 秒），线上已更新到新版。所以上一次超时更可能是 GitHub 临时问题，而不是站点太大。图片压缩（Q7）仍然值得做，主要是为了加载速度。这条记录本身还没有提交。
+44. 2026-11-06 Mohini 线按 PDF 重写（D-T7）：替换了原来 7 幕的旧剧情，换成 Scene 1–5（每幕 3 个选项）和 Final Scene；Mohini 也走 `redScene` / `rbEndPage` 这套卡片页。结局按钮用 PDF 的 “What if her circumstances had been different?”，然后进入 What If。verify 新增 1b：96 段文字全部逐字在 PDF 中。测试：Scene 1 和 Final Scene 用自然速度走过；Scene 2–5 用快速跳过的方式确认了流程、Place/Time、选项数和结果页；红嫁衣抽查了幕和结局。控制台无报错。verify：19 FAIL / 7 WARN（和之前一样）。备份文件为 scratchpad/index.before-mohini-script.html。
+45. 2026-11-06 首页加第二篇文献（D-L8）。两张卡片在右栏上下排列；页脚所有新页面都显示。已测试：电脑宽度截图、手机宽度无横向滚动、控制台无报错。verify：19 FAIL / 7 WARN，新增 2 项检查。备份文件为 scratchpad/index.before-lykke.html。
+46. 2026-11-06 Mohini Scene 1 改为图片序列：01 → 02（含 “For a moment…”，用户没指定，留在 02）→ 03 王室的邀请 → 03 母亲视角 → 04 米娜视角 → 04 机会与威胁（Mohini、Attendant 对话，“His voice…”，选项）。“Your mother sees…; your friend sees…” 按用户要求在分号处分到两张图上。结果：A 05 → 08；B 06 → 08；C 07（Mother 对话框 + “Her concern…”）→ 08；三条都以 “The palace becomes a recurring presence in Mohini's life.” 收尾。新增半身图 Mohini_女主_半身、Mother_母亲_半身（scale 0.65，没挡脸）。Attendant 没有立绘，只显示对话框（D-F17）。05、08 的 Place 复用 A Secluded Palace Garden。verify 现在也检查 Mohini 的图片序列和结构。用自然速度走过开场和 A/B/C；Continue 进入 Scene 2；控制台无报错。verify：114 段 Mohini 文字、256 段红嫁衣文字都通过，19 FAIL / 12 WARN（新增 5 条图片大小 WARN）。备份文件为 scratchpad/index.before-mohini-s1.html。
+47. 2026-11-06 Mohini Scene 1 的 03 底图换成用户修正的 03_王室的邀请_母亲修正版.png（旧文件已被用户从文件夹移走）。备份文件为 scratchpad/index.before-03fix.html。
+48. 2026-11-06 首页排版改为文字在上、两篇文献并排（D-L9）。电脑和手机宽度都检查过。备份文件为 scratchpad/index.before-home-layout.html。
+49. 2026-11-06 Mohini Scene 2 改为图片序列：Scene2_01（3 行浮现，D-F18；Mohini 第一句）→ Scene2_02（King，舞台提示 “The king looks away.”；Mohini）→ Scene2_03（For a moment… + 选项）。A：Scene2_04（You fold… Weeks pass.）→ Scene2_05（His messenger… Your hope…）；B：Scene2_06（King，舞台提示 “He grows cold.”；The court begins…）；C：Scene2_07。新增 King_国王_半身（0.65）。Place：A 用 Mohini's Family Home，B 用 The Palace，C 用 The Village（B、C 是新名字，待确认）。Time 仍是 Evening。用自然速度走过开场和 A/B/C，Continue 进入 Scene 3；控制台无报错。verify：130 段 Mohini、256 段红嫁衣文字都通过，19 FAIL / 13 WARN（新增图片大小 WARN）。备份文件为 scratchpad/index.before-mohini-s2.html。
+50. 2026-11-06 Mohini Scene 2 的 A/B/C 都收束到 Scene2_05 上的 “The king's letters become less frequent.”：A 本来就在这张图上，只加文字；B、C 换图后显示（Place 为 Mohini's Family Home）。用自然速度走过三条，Continue 进入 Scene 3；控制台无报错。verify：133 段 Mohini 文字通过，19 FAIL / 13 WARN。备份文件为 scratchpad/index.before-s2-closing.html。
+51. 2026-11-06 Mohini Scene 3 改为图片序列：Scene3_01 → 02 → 03，然后在 03 上用 3 句 whisper（PDF 的 Suggested on-screen whisper overlays）一行行浮现，再出现 “How will you respond?” 和选项。A：Scene3_04；B：Scene3_05；C：Scene3_06（B、C 的 Place 为 The Village）。修复：三个选项时问题文字会被选项盖住，现在把文字上移（`many` 类，Scene 1–3 都生效）。A 是用户在预览里点的；B、C 用自然速度确认过结果文字和 Continue；Continue 进入 Scene 4；控制台无报错。Transition 还没加（等用户指定）。verify：146 段 Mohini 文字通过，19 FAIL / 19 WARN（新增的都是图片大小）。备份文件为 scratchpad/index.before-mohini-s3.html。
+52. 2026-11-06 上传 GitHub：Mohini 线（新剧情、Scene 1–3 图片序列）、首页第二篇文献和新排版、What If 修改。发布结果以 Actions 和线上页面为准（C-10）。
 
 ## 待解决问题（需要用户决策）
 - [x] **Q1 剧本升级到 V3（剧情文字部分）**：2026-11-04 已同步；理论框见 Q3。
@@ -110,6 +121,8 @@
 - [ ] **Q24 Scene 6 的 Old Woman 这句**：放在 38 上时，侧门和棺木在 “The side door…slowly opens” 之前就已经出现。要不要把这句放回 35，从 “The side door” 开始换 38？
 - [x] **Q25 What If 的引导文字**：What If 页写着 “explore three questions”，开头页写着 “three questions drawn from the reading”，但现在 What If 上只有两个 debate；页尾说明还提到 sexuality / gender，红嫁衣线已经没有这两项。要改吗？
 - [x] **Q26 Mohini 的 Debate 01**：标题和选项要不要也按红嫁衣的改？
+- [ ] **Q27 Mohini 线**：Place/Time 名称是从 Setting 取的，需要确认；Scene 3 的 3 句 whisper overlays 是否做成画面效果；PDF 里 What If 的问题和解释与现在页面不同（现在页面是用户改过的版本）；PDF 结尾写的是 “Explore the Red Bride”，现在按钮是 “Explore the other story”。
+- [ ] **Q28 Mohini Scene 1 的 08**：选 B（拒绝）或 C 之后，收尾仍然是莫希妮和国王在莲池边约会的画面，和选项有落差。要保留吗？Attendant 要不要补立绘？
 - [ ] **Q12 Scene 2 A 的收尾**：A 线的 “You lie awake all night…” 仍然显示在 07B 厨房（白天）的底图上；要不要也换成 12 窗边未眠？
 - [x] **Q10 顶部信息栏**：2026-11-05 用户决定 Place 和 Time 都随画面变化（D-F11）。目前只有 Scene 2 A 的收尾改为 That Night。
 

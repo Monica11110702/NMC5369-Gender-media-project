@@ -11,6 +11,7 @@
 - **D-T3 用户指定的例外**：序章 B 的旁白截成 “You step softly toward the door.”（原文后面还有 “and hear your father say,”）。
 - **D-T4 名牌**：Mother / Father / You 直接取自剧本；运粮男人的名牌是 “A Man”（用户确认）。剧本没有 `Name:` 时，可以用剧本正文里原样出现的称呼（例如 “A-Yue”“A-Yue’s father”），但不能自己起名（C-03）。
 - **D-T6 括号里的舞台提示**（如 “(Interrupting immediately)”）按 D-T2 处理，放进下一句台词对话框的舞台提示行，保留括号（2026-11-04 首次使用，具体呈现方式待 Q4 确认）。
+- **D-T7 Mohini 线**（2026-11-06，用户要求）：文字来源是 `印度故事/Mohini Pei- Summary (1).pdf`，格式和红嫁衣的卡片页相同（Place/Stage/Time 栏、打字机、底部选项、结果另起一页）。只放 PDF 标为 on-screen 的内容，以及 Dialogue、选项和结局。Transition、Visual and audio cues、Intersectional significance 是制作说明，不显示。on-screen question 放在正文最后一段（`rb-em`）。Place/Time 取自每幕的 Setting。PDF 里是直引号，按原文保留。不再使用旧的数值条和 Berlant 理论框。例外：用户指定 Scene 1 的 Transition 第一句 “The palace becomes a recurring presence in Mohini's life.” 在三个选项之后都显示；Scene 2 的 “The king's letters become less frequent.” 同样如此。规律：每幕三个选项都收束到 Transition 的第一句和用户指定的底图。Scene 3 及之后由用户逐幕指定。
 - **D-T5 剧本路由提示不显示**：“→ Proceed to Scene 6”“Only players who chose…” 这类提示只用于分支逻辑，不作为文字显示给玩家。
 
 ## 二、页面布局（L）
@@ -32,6 +33,8 @@
   - What If 页和开头页都写 “two questions”。
   - 页底说明 “These speculative stories…” 只在 Mohini 的 What If 上显示。
   - Debate 03 的 inter 解释：红嫁衣写 “money and education”，这个措辞由 Claude 改写，用户同意修改、但还没看过具体文字；Mohini 保持 “money, community ties and recognition”。
+- **D-L8 第二篇文献**（2026-11-06，用户要求）：首页 Phoenix 卡片下面加 Nina Lykke (2010) 卡片，文字是用户原话；页脚加 “Second theoretical source: Lykke, N. (2010)…”。页脚里的出版社 Routledge 和章节标题的句首大写格式是 Claude 补的，用户还没确认。
+- **D-L9 首页文献排版**（2026-11-06，用户要求）：说明文字横向铺满，两篇文献卡片在下方并排；手机宽度下上下排列。
 - **D-L4 结局与 Final Screen** 使用和剧情页相同的卡片排版；结局之后进入 Final Screen，再进入 What If（档案页已于 2026-11-06 按用户要求删除，见 D-L6）。
 
 ## 三、图片序列 / 镜头（F）——新增画面时默认按这套做
@@ -51,6 +54,8 @@
 - **D-F14 无文字的画面**（2026-11-06）：一句话要配多张底图时，文字放在第一张上，后面的图用 `{bg, hold:毫秒}` 不加蒙版、不显示文字，依次切换（Scene 6 A 的 47B 和棺内）。
 - **D-F15 变黑**（2026-11-06，用户要求 Scene 6 A 结尾变黑）：end 步骤写 `black:true`，最后一段文字读完后，底图在 5 秒内变成全黑，文字留在画面上，然后才出现按钮。
 - **D-F16 红嫁衣开场**（2026-11-06，用户要求）：点进红嫁衣先进入 `opening` 页。`00_开场_纸人围观冥婚.png` 铺满整个浏览器窗口（这是 C-07 “只覆盖卡片”的唯一例外），没有任何文字，从黑暗中用 5 秒显现；点击或按空格后约 2.4 秒消失，再由黑场进入 Prologue。Opening 那段剧本不显示文字，verify 的覆盖度已按此处理。“Replay this chapter” 也会重新播放开场；Mohini 线没有这一页。
+- **D-F17 没有立绘的对话**（2026-11-06）：talk 不写 `img` 时只显示对话框，不显示立绘（目前用于 Mohini 线的 Attendant，他没有立绘）。
+- **D-F18 一行行浮现**（2026-11-06，用户要求）：`{stack:[句子…]}` 让几行文字依次淡入并留在画面上，全部显示后停留一会儿，再一起淡出；点击可以提前出下一行。用于 Mohini Scene 2 开头。
 - **D-F9 共用收尾段落**（剧本里 “Whichever path you choose…” 这类）：按句子拆成若干旁白，最后一句留在画面上并出现 Continue；理论框和 Continue 一起出现。
 
 ## 四、立绘与素材（A）

@@ -68,7 +68,7 @@ def find_script(arg):
     return cands[0]
 
 
-def load_data(html_src):
+def load_data(html_src, key="red"):
     """用真实 JS 引擎执行页面脚本（不渲染），取出 data.red；同时完成语法检查。"""
     m = re.search(r"<script>(.*)</script>", html_src, flags=re.S)
     if not m:
@@ -78,9 +78,9 @@ def load_data(html_src):
     stub = "var document={getElementById:function(){return {}}};var window={scrollTo:function(){}};\n"
     engines = []
     if shutil.which("osascript"):
-        engines.append(("osascript", ["osascript", "-l", "JavaScript"], "\nJSON.stringify(data.red)"))
+        engines.append(("osascript", ["osascript", "-l", "JavaScript"], f"\nJSON.stringify(data.{key})"))
     if shutil.which("node"):
-        engines.append(("node", ["node"], "\nconsole.log(JSON.stringify(data.red))"))
+        engines.append(("node", ["node"], f"\nconsole.log(JSON.stringify(data.{key}))"))
     if not engines:
         return None, "没有可用的 JS 引擎（需要 macOS osascript 或 node）"
     name, cmd, tail = engines[0]
@@ -94,6 +94,31 @@ def load_data(html_src):
     if r.returncode != 0:
         return None, f"{name} 执行失败（多半是 JS 语法错误）：{r.stderr.strip()[:400]}"
     return json.loads(r.stdout), None
+
+
+def pdf_text(path):
+    """用 macOS PDFKit 读取 Mohini 剧本（印度故事/*.pdf）。"""
+    js = ("ObjC.import('PDFKit');ObjC.import('Foundation');function run(a){var d=$.PDFDocument.alloc.initWithURL($.NSURL.fileURLWithPath(a[0]));"
+          "var o='';for(var i=0;i<d.pageCount;i++){o+=' '+ObjC.unwrap(d.pageAtIndex(i).string)}return o}")
+    with tempfile.NamedTemporaryFile("w", suffix=".js", delete=False, encoding="utf-8") as f:
+        f.write(js)
+    try:
+        r = subprocess.run(["osascript", "-l", "JavaScript", f.name, path], capture_output=True, text=True, timeout=60)
+    finally:
+        os.unlink(f.name)
+    return norm(r.stdout) if r.returncode == 0 else None
+
+
+def mohini_strings(x):
+    if isinstance(x, str):
+        yield x
+    elif isinstance(x, list):
+        for y in x:
+            yield from mohini_strings(y)
+    elif isinstance(x, dict):
+        for k, y in x.items():
+            if k in ("body", "opts", "t", "title", "film", "outs", "beats", "line", "stack", "end", "talk", "text", "act"):
+                yield from mohini_strings(y)
 
 
 SECTION = re.compile(r"^(Opening(?=:)|Prologue|Scene \d+|Ending [A-Z]|Final Screen)\b")
@@ -197,6 +222,17 @@ def main():
         return rep.show()
     rep.add("PASS", "1 JS 解析", "页面脚本可以解析并执行到数据定义")
 
+    # 1b. Mohini 线（来源：印度故事/*.pdf）
+    pdfs = glob.glob(os.path.join(ROOT, "印度故事", "*.pdf"))
+    mo, merr = load_data(html_src, "mohini")
+    ptxt = pdf_text(pdfs[0]) if len(pdfs) == 1 else None
+    if merr or not ptxt:
+        rep.add("WARN", "1b Mohini 文字 ⇄ PDF 剧本", f"无法检查：{merr or '读不到唯一的 PDF'}")
+    else:
+        items = [norm(t) for t in mohini_strings([mo.get("scenes"), mo.get("final")])]
+        bad = [t for t in items if t not in ptxt]
+        rep.add("FAIL" if bad else "PASS", "1b Mohini 文字 ⇄ PDF 剧本", f"{len(bad)} 段不在 PDF 中，例如：{bad[0][:90]}" if bad else f"{len(items)} 段文字全部逐字出现在 PDF 中")
+
     # 2–4. 文字
     story, theory, names, other = [], [], set(), []
     for keys, s in walk(red):
@@ -248,7 +284,8 @@ def main():
     # 5. 图片序列结构
     refs = set()
     any_film = False
-    for where, fm in films(red):
+    mohini_films = [(f"Mohini {w}", f) for w, f in films(mo or {})]
+    for where, fm in list(films(red)) + mohini_films:
         any_film = True
         beats = fm.get("beats") or []
         ends = [i for i, b in enumerate(beats) if "end" in b]
@@ -260,12 +297,13 @@ def main():
             if "bg" in b:
                 refs.add(b["bg"])
             for t in b.get("talk", []):
-                miss = [k for k in ("who", "img", "text") if not t.get(k)]
+                miss = [k for k in ("who", "img", "text") if not t.get(k) and not (k == "img" and t.get("who") == "Attendant")]
                 if miss:
                     rep.add("FAIL", "5 图片序列结构", f"{where}：对话缺少 {miss}")
                 if t.get("flip"):
                     rep.add("FAIL", "7 已确认约定", f"{where}：{t.get('who')} 设置了 flip（立绘不翻转，见 C-01）")
-                refs.add(t.get("img", ""))
+                if t.get("img"):
+                    refs.add(t["img"])
         if beats and beats[-1].get("then") not in ("choice", "next"):
             rep.add("FAIL", "5 图片序列结构", f"{where}：end 的 then 必须是 choice 或 next")
     if any_film and not any(r[1].startswith("5") for r in rep.rows):
@@ -297,6 +335,8 @@ def main():
         ("From an intersectional perspective, this game aims to help players understand", "开头段落是用户指定的文字（D-L6）"),
         ("function renderWhatIf()", "结尾有 What If 页（D-L6）"),
         ("function renderMethod()", "Debate 03 在结尾共用页（D-L7）"),
+        ("Nina Lykke (2010)", "首页有第二篇文献（D-L8）"),
+        ("Second theoretical source: Lykke", "页脚有第二篇文献（D-L8）"),
         ("If she had received even a little education", "Debate 02 有 Educational background（D-L7）"),
         ("go('reflect')", "What If 之后进入两个故事共用的页面（D-L6）"),
         ("l.textContent.split(' · ')[0]+' · '+pl", "中间标签跟随 Place（D-F8）"),
