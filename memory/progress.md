@@ -109,8 +109,10 @@
 65. **上传**（2026-11-06，用户要求）：提交 `49fa07a` 已推送，包含进度条、音频和 `红嫁衣音频/`，不含 `demo_progress.html`。线上 `index.html` 和本地逐字节相同，Actions 显示 pages build and deployment 成功，仓库公开，线上 9 个音频可解码。
 66. **Mohini 音频**（2026-11-06，用户要求）：按 D-S3 加入三段循环音乐，`verify.py` 6b 检查扩展到 Mohini（触发句对 PDF）。测试发现慢网络下“点击解锁”的静音试播回调可能晚于音乐开始，导致音乐被暂停；已用 `rbStartClip` 修复，红嫁衣同样受益。备份在 scratchpad 的 `index.before-mohini-audio.html`、`index.before-unlock-race.html`。verify 19 FAIL、28 WARN。已随第 67 项上传。
 67. **上传**（2026-11-06，用户要求）：提交 `a22fdd4` 已推送，包含 Mohini 音频和慢加载修复，不含 `demo_progress.html`。线上 `index.html` 和本地逐字节相同，线上 3 首音乐可解码，真实点击后 Mohini 开头音乐正常播放。
-68. **结尾文字、Mohini 开场、APA**（2026-11-06，用户要求）：按 D-L12、D-L13、D-F19 修改。备份在 scratchpad 的 `index.before-ending-text.html`。verify 19 FAIL、28 WARN，模拟环境补了 `window.addEventListener`。未提交、未上线。
-69. **图片翻译**（2026-11-06，用户要求）：按 D-T10、D-F20 给红嫁衣开场和 Ending B 加翻译文字。备份在 scratchpad 的 `index.before-translations.html`。verify 19 FAIL、28 WARN。第 68、69 项都未提交、未上线。
+68. **结尾文字、Mohini 开场、APA**（2026-11-06，用户要求）：按 D-L12、D-L13、D-F19 修改。备份在 scratchpad 的 `index.before-ending-text.html`。verify 19 FAIL、28 WARN，模拟环境补了 `window.addEventListener`。
+69. **图片翻译**（2026-11-06，用户要求）：按 D-T10、D-F20 给红嫁衣开场和 Ending B 加翻译文字。备份在 scratchpad 的 `index.before-translations.html`。verify 19 FAIL、28 WARN。第 68、69 项已随第 70 项上传。
+70. **上传**（2026-11-06，用户要求）：提交 `de7d96b` 已推送，包含第 68、69 项，不含 `demo_progress.html`。线上 `index.html` 和本地逐字节相同，Actions 成功，仓库公开，线上 118 个图片和音频引用全部返回 200。
+71. **Mohini 开头音乐不重叠**（2026-11-06，用户要求）：点掉开场图时结束开场声音（见 C-12）。复现时重叠 1.1 秒，修复后四种节奏都是 0 秒。备份在 scratchpad 的 `index.before-mh-audio-gap.html`。verify 19 FAIL、28 WARN。未提交、未上线。
 
 ## 待解决问题（需要用户决策）
 - [x] **Q1 剧本升级到 V3（剧情文字部分）**：2026-11-04 已同步；理论框见 Q3。

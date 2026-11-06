@@ -244,7 +244,7 @@ else if(state.screen==='ending'&&state.who==='red'&&data.red.endings[state.endin
 const RB_OPEN='第一章场景/00_开场_纸人围观冥婚.png',MH_OPEN='印度剧情图/Ending_02_传说中的茉莉幽灵_正面恐怖版_v2.png';
 function rbOpening(){rbFilmStop&&rbFilmStop();state.filmBg=null;rbFxStop();rbBgm(state.who==='red'?'open':'mhopen');window.scrollTo(0,0);const o=document.querySelector('.rb-open'),i=o.querySelector('img');let out=false;rbNoteIn(o,i.getAttribute('src'));
 i.decode().catch(()=>{}).finally(()=>setTimeout(()=>o.classList.add('on'),60));
-const leave=e=>{if(e.type==='keydown'){if(e.code!=='Space'&&e.key!=='Enter')return;e.preventDefault()}if(out)return;out=true;document.removeEventListener('keydown',leave);o.classList.add('out');
+const leave=e=>{if(e.type==='keydown'){if(e.code!=='Space'&&e.key!=='Enter')return;e.preventDefault()}if(out)return;out=true;document.removeEventListener('keydown',leave);o.classList.add('out');if(rbMusicKey==='mhopen')rbBgm(null);
 setTimeout(()=>{if(state.screen!=='opening')return;state.screen='game';render();const v=document.createElement('div');v.className='rb-veil';document.body.append(v);setTimeout(()=>v.classList.add('off'),40);setTimeout(()=>v.remove(),1500)},2600)};
 o.onclick=leave;document.addEventListener('keydown',leave)}
 // Opening, character, What If and reflection pages (ported from monsther_final_story_experience.html).
