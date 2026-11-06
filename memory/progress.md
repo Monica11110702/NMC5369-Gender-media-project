@@ -107,7 +107,10 @@
 63. **进度条并入 `index.html`**（2026-11-06，用户确认）：规则见 D-L11，手机点击区域从 24 高调到 36 高。备份在 scratchpad 的 `index.before-progress-bar.html`。verify 19 FAIL、28 WARN，和并入前相同。未提交、未上线。
 64. **红嫁衣音频**（2026-11-06，用户要求）：按 D-S1、D-S2 加入背景音乐和音效，`verify.py` 新增 6b 音频检查（文件存在、触发句在剧本中）并给模拟环境补了 `addEventListener`。备份在 scratchpad 的 `index.before-audio.html`。verify 19 FAIL、28 WARN，和之前相同。已随第 65 项上传。AI 无法听声音，音量和听感需要用户试听。测试时发现离开故事或进入开场页后旧播放器仍在后台运行，会改写存档位置，也可能在其他页面触发音频；已在 `render` 和 `rbOpening` 里停止播放器（备份 `index.before-audio-stopfix.html`）。
 65. **上传**（2026-11-06，用户要求）：提交 `49fa07a` 已推送，包含进度条、音频和 `红嫁衣音频/`，不含 `demo_progress.html`。线上 `index.html` 和本地逐字节相同，Actions 显示 pages build and deployment 成功，仓库公开，线上 9 个音频可解码。
-66. **Mohini 音频**（2026-11-06，用户要求）：按 D-S3 加入三段循环音乐，`verify.py` 6b 检查扩展到 Mohini（触发句对 PDF）。测试发现慢网络下“点击解锁”的静音试播回调可能晚于音乐开始，导致音乐被暂停；已用 `rbStartClip` 修复，红嫁衣同样受益。备份在 scratchpad 的 `index.before-mohini-audio.html`、`index.before-unlock-race.html`。verify 19 FAIL、28 WARN。未提交、未上线，上传时要带上 `印度故事音频/`（约 9.4MB）。
+66. **Mohini 音频**（2026-11-06，用户要求）：按 D-S3 加入三段循环音乐，`verify.py` 6b 检查扩展到 Mohini（触发句对 PDF）。测试发现慢网络下“点击解锁”的静音试播回调可能晚于音乐开始，导致音乐被暂停；已用 `rbStartClip` 修复，红嫁衣同样受益。备份在 scratchpad 的 `index.before-mohini-audio.html`、`index.before-unlock-race.html`。verify 19 FAIL、28 WARN。已随第 67 项上传。
+67. **上传**（2026-11-06，用户要求）：提交 `a22fdd4` 已推送，包含 Mohini 音频和慢加载修复，不含 `demo_progress.html`。线上 `index.html` 和本地逐字节相同，线上 3 首音乐可解码，真实点击后 Mohini 开头音乐正常播放。
+68. **结尾文字、Mohini 开场、APA**（2026-11-06，用户要求）：按 D-L12、D-L13、D-F19 修改。备份在 scratchpad 的 `index.before-ending-text.html`。verify 19 FAIL、28 WARN，模拟环境补了 `window.addEventListener`。未提交、未上线。
+69. **图片翻译**（2026-11-06，用户要求）：按 D-T10、D-F20 给红嫁衣开场和 Ending B 加翻译文字。备份在 scratchpad 的 `index.before-translations.html`。verify 19 FAIL、28 WARN。第 68、69 项都未提交、未上线。
 
 ## 待解决问题（需要用户决策）
 - [x] **Q1 剧本升级到 V3（剧情文字部分）**：2026-11-04 已同步；理论框见 Q3。
@@ -143,6 +146,7 @@
 - [ ] **Q32 进度条**：玩完后是否解锁全部节点（目前只解锁玩过的）？红嫁衣三个结局是否都放在进度条上？解锁记录要不要在关闭标签页后保留？`demo_progress.html` 是否删除？
 - [ ] **Q33 红嫁衣音频**：2026-11-06 用户试听后确认音量和时机可以（含打碎碗、母亲哭泣2 的位置）。未单独回答：婚礼音乐循环是否符合原意、开头恐怖音乐是否循环、结婚唢呐.MP3 是否使用、要不要加静音按钮。
 - [x] **Q34 Mohini 音频**：2026-11-06 用户确认音量和时机可以。
+- [ ] **Q35 结尾页**：第一段下方留白，要不要加向下滑动的提示？页脚 “Complete Storyline V2” 仍未改（Q20）。Lykke 文献要不要保留章节名？
 - [ ] **Q12 Scene 2 A 的收尾**：A 线的 “You lie awake all night…” 仍然显示在 07B 厨房（白天）的底图上；要不要也换成 12 窗边未眠？
 - [x] **Q10 顶部信息栏**：2026-11-05 用户决定 Place 和 Time 都随画面变化（D-F11）。目前只有 Scene 2 A 的收尾改为 That Night。
 

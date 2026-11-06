@@ -33,6 +33,8 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # 经用户确认、允许不逐字出现在剧本里的剧情文字（来源见 memory/decisions.md）
 APPROVED_TEXT = {
+    "[translation: Spirit Tablet of Mr. Chen]": "D-T10 用户指定的图片翻译（2026-11-06）",
+    "[translation: Spirit Tablet of Mr. Chen; Spirit Tablet of the Wife of Mr. Chen]": "D-T10 用户指定的图片翻译（2026-11-06）",
     "You step softly toward the door.": "D-T3 用户指定把旁白截到这里（2026-11-03）",
 }
 # 经用户确认的名牌（剧本里没有对应的 "Name:"）
@@ -75,7 +77,7 @@ def load_data(html_src, key="red"):
         return None, "找不到 <script>"
     code = m.group(1)
     code = re.sub(r"render\(\);\s*$", "", code.rstrip())  # 不执行首屏渲染
-    stub = "var document={getElementById:function(){return {}},addEventListener:function(){}};var window={scrollTo:function(){}};\n"
+    stub = "var document={getElementById:function(){return {}},addEventListener:function(){}};var window={scrollTo:function(){},addEventListener:function(){}};\n"
     engines = []
     if shutil.which("osascript"):
         engines.append(("osascript", ["osascript", "-l", "JavaScript"], f"\nJSON.stringify(data.{key})"))

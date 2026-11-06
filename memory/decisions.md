@@ -14,6 +14,7 @@
 - **D-T7 Mohini 线**（2026-11-06，用户要求）：文字来源是 `印度故事/Mohini Pei- Summary (1).pdf`，格式和红嫁衣的卡片页相同（Place/Stage/Time 栏、打字机、底部选项、结果另起一页）。只放 PDF 标为 on-screen 的内容，以及 Dialogue、选项和结局。Transition、Visual and audio cues、Intersectional significance 是制作说明，不显示。on-screen question 放在正文最后一段（`rb-em`）。Place/Time 取自每幕的 Setting。PDF 里是直引号，按原文保留。不再使用旧的数值条和 Berlant 理论框。例外：用户指定 Scene 1 的 Transition 第一句 “The palace becomes a recurring presence in Mohini's life.” 在三个选项之后都显示；Scene 2 的 “The king's letters become less frequent.” 同样如此。规律：每幕三个选项都收束到 Transition 的第一句和用户指定的底图。Scene 3 及之后由用户逐幕指定。
 - **D-T8 Mohini Scene 4 裁剪**（2026-11-06，用户要求）：开头一句只保留 “The king's final letter arrives.”（PDF 原句后半 “without a signature: there will be no marriage.” 删除，信上的图已写明），`verify.py` 的 `MOHINI_ALLOW` 白名单里有这一句；“Your father has barred the gate, hoping the gossip will pass.” 之后的 “The room is full of people who love you.” 和 “It has never felt so lonely.” 删除。三个选项之后共用 PDF 的 Transition 句作收尾，配 Scene4_10 和 Scene4_09。
 - **D-T9 Mohini 删句**（2026-11-06，用户要求）：Scene 5 选项 C 删掉 “Your friend remembers every word, even when the public story changes.”；Final Scene 删掉 “ENDING UNLOCKED: The Woman the Village Forgot” 和 PDF 标为 Required on-screen note 的说明文字。Final Scene 现在以引语 “He returned to his palace…” 结尾。
+- **D-T10 图片翻译**（2026-11-06，用户要求）：`00_开场` 最下面加 “[translation: Spirit Tablet of Mr. Chen]”；`52_结局` 加 “[translation: Spirit Tablet of Mr. Chen; Spirit Tablet of the Wife of Mr. Chen]”。两处颜色都是 #e8d8a6（偏黄）。配置在 `RB_NOTES`，用图片坐标定位，原图不动。52 放在水平居中的供桌前沿，不放在图片正中，因为正中是灵位和旁白。
 - **D-T5 剧本路由提示不显示**：“→ Proceed to Scene 6”“Only players who chose…” 这类提示只用于分支逻辑，不作为文字显示给玩家。
 
 ## 二、页面布局（L）
@@ -39,6 +40,8 @@
 - **D-L9 首页文献排版**（2026-11-06，用户要求）：说明文字横向铺满，两篇文献卡片在下方并排；手机宽度下上下排列。
 - **D-L10 不留单词行**（2026-11-06，用户要求）：剧情文字换行时最后一行不能只有一个单词，也不能靠合并句子解决。旁白、问题和选项用 `text-wrap:balance`；旁白、对话、结尾文字显示时用 `rbGlue` 把最后两个单词用不换行空格连住（只影响显示，`data` 里的文字不变）。
 - **D-L11 进度条**（2026-11-06，用户要求）：Place/Stage/Time 面板顶部有可点击进度条，节点文字和悬停标题取自现有 Stage 和场景标题。红嫁衣 11 个节点（Prologue、Scene 1–6、Ending A/B/C、Final Screen），Mohini 6 个节点（Scene 1–5、Final Scene）。只有玩过的节点能点，未玩过的节点变暗、不显示标题；玩完后可以点回玩过的章节。往回跳和 Replay 不重新上锁。跳转从该段开头播放，往回跳时清掉该段及之后的选择记录。解锁记录在 `state.seen`，随 sessionStorage 保存。手机宽度只显示圆点。
+- **D-L12 结尾页文字**（2026-11-06，用户要求）：`reflect` 页原来的 “Her identity did not determine her fate…” 换成用户给的 5 段文字，两个故事共用。滑动时文字固定，每滑一段距离浮现下一段，已浮现的保留，滑到最后 5 段全部显示。屏幕太矮放不下时直接全部显示。
+- **D-L13 页脚文献**（2026-11-06，用户要求）：Phoenix 和 Lykke 改成 APA 7，标签和其他句子不变。Crossref 记录没有 Phoenix 的卷号，所以只写期号 (2–3)。Lykke 是单一作者的书，按 APA 引用整本书，章节信息保留在首页卡片上。
 - **D-L4 结局与 Final Screen** 使用和剧情页相同的卡片排版；结局之后进入 Final Screen，再进入 What If（档案页已于 2026-11-06 按用户要求删除，见 D-L6）。
 
 ## 三、图片序列 / 镜头（F）——新增画面时默认按这套做
@@ -60,6 +63,8 @@
 - **D-F16 红嫁衣开场**（2026-11-06，用户要求）：点进红嫁衣先进入 `opening` 页。`00_开场_纸人围观冥婚.png` 铺满整个浏览器窗口（这是 C-07 “只覆盖卡片”的唯一例外），没有任何文字，从黑暗中用 5 秒显现；点击或按空格后约 2.4 秒消失，再由黑场进入 Prologue。Opening 那段剧本不显示文字，verify 的覆盖度已按此处理。“Replay this chapter” 也会重新播放开场；Mohini 线没有这一页。
 - **D-F17 没有立绘的对话**（2026-11-06）：talk 不写 `img` 时只显示对话框，不显示立绘（目前用于 Mohini 线的 Attendant，他没有立绘）。
 - **D-F18 一行行浮现**（2026-11-06，用户要求）：`{stack:[句子…]}` 让几行文字依次淡入并留在画面上，全部显示后停留一会儿，再一起淡出；点击可以提前出下一行。用于 Mohini Scene 2 开头。
+- **D-F19 Mohini 开场**（2026-11-06，用户要求）：和红嫁衣一样先进 `opening` 页，图片是 `Ending_02_传说中的茉莉幽灵_正面恐怖版_v2.png`，全屏，点击后进入 Scene 1。声音是结尾出走的开头约 5 秒（第 3.8 秒起淡出）。
+- **D-F20 翻译文字不重叠**（2026-11-06，用户要求）：翻译文字不能碰到旁白、标题、提示和按钮。碰到按钮时按钮下移；挪不开时翻译在按钮出现前淡出。碰到 “Click to continue” 时隐藏这一屏的提示。有翻译的开场图从底部对齐裁切，保证最下面的区域可见。
 - **D-F9 共用收尾段落**（剧本里 “Whichever path you choose…” 这类）：按句子拆成若干旁白，最后一句留在画面上并出现 Continue；理论框和 Continue 一起出现。
 
 ## 四、立绘与素材（A）
