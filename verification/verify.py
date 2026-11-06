@@ -75,7 +75,7 @@ def load_data(html_src, key="red"):
         return None, "找不到 <script>"
     code = m.group(1)
     code = re.sub(r"render\(\);\s*$", "", code.rstrip())  # 不执行首屏渲染
-    stub = "var document={getElementById:function(){return {}}};var window={scrollTo:function(){}};\n"
+    stub = "var document={getElementById:function(){return {}},addEventListener:function(){}};var window={scrollTo:function(){}};\n"
     engines = []
     if shutil.which("osascript"):
         engines.append(("osascript", ["osascript", "-l", "JavaScript"], f"\nJSON.stringify(data.{key})"))
@@ -328,6 +328,17 @@ def main():
         rep.add("WARN", "6 资源文件", f"{r} 有 {n / 1048576:.1f}MB，正式交付前建议压缩")
     if not missing:
         rep.add("PASS", "6 资源文件", f"{len(refs)} 个引用的文件都存在")
+
+    # 6b. 红嫁衣音频：文件存在，触发句逐字来自剧本
+    audio_lines = [l for l in html_src.split("\n") if l.startswith(("const RB_MUSIC=", "const RB_FX=", "const RB_CUES="))]
+    if len(audio_lines) == 3:
+        names = [n for l in audio_lines[:2] for n in re.findall(r"\['([^']+)',", l)]
+        lost = [n for n in names if not os.path.isfile(os.path.join(ROOT, "红嫁衣音频", n + ".MP3"))]
+        whole = norm(" ".join(docx_paras(script)))
+        cues = re.findall(r"\[['\"](.+?)['\"],'\w+'\]", audio_lines[2])
+        off = [c for c in cues if norm(c) not in whole]
+        rep.add("FAIL" if lost else "PASS", "6b 音频", f"音频文件 {len(names)} 个，缺失：{lost or '无'}")
+        rep.add("FAIL" if off or not cues else "PASS", "6b 音频", f"触发句 {len(cues)} 句，不在剧本：{off or '无'}")
 
     # 7. 已确认约定（CSS/代码层面的守卫）
     guards = [

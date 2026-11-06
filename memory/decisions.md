@@ -38,6 +38,7 @@
 - **D-L8 第二篇文献**（2026-11-06，用户要求）：首页 Phoenix 卡片下面加 Nina Lykke (2010) 卡片，文字是用户原话；页脚加 “Second theoretical source: Lykke, N. (2010)…”。页脚里的出版社 Routledge 和章节标题的句首大写格式是 Claude 补的，用户还没确认。
 - **D-L9 首页文献排版**（2026-11-06，用户要求）：说明文字横向铺满，两篇文献卡片在下方并排；手机宽度下上下排列。
 - **D-L10 不留单词行**（2026-11-06，用户要求）：剧情文字换行时最后一行不能只有一个单词，也不能靠合并句子解决。旁白、问题和选项用 `text-wrap:balance`；旁白、对话、结尾文字显示时用 `rbGlue` 把最后两个单词用不换行空格连住（只影响显示，`data` 里的文字不变）。
+- **D-L11 进度条**（2026-11-06，用户要求）：Place/Stage/Time 面板顶部有可点击进度条，节点文字和悬停标题取自现有 Stage 和场景标题。红嫁衣 11 个节点（Prologue、Scene 1–6、Ending A/B/C、Final Screen），Mohini 6 个节点（Scene 1–5、Final Scene）。只有玩过的节点能点，未玩过的节点变暗、不显示标题；玩完后可以点回玩过的章节。往回跳和 Replay 不重新上锁。跳转从该段开头播放，往回跳时清掉该段及之后的选择记录。解锁记录在 `state.seen`，随 sessionStorage 保存。手机宽度只显示圆点。
 - **D-L4 结局与 Final Screen** 使用和剧情页相同的卡片排版；结局之后进入 Final Screen，再进入 What If（档案页已于 2026-11-06 按用户要求删除，见 D-L6）。
 
 ## 三、图片序列 / 镜头（F）——新增画面时默认按这套做
@@ -69,6 +70,10 @@
 - **D-A4 换表情**：剧本写到情绪变化时换对应表情的立绘（例如 “Your father frowns.” 之后换成生气的父亲）。
 - **D-A5 底图**：16:9（1672×941），放在 `第一章场景/NN_描述_v1.png`，通过相对路径引用。html 必须和素材文件夹放在同一目录下。用户移动素材文件夹后，按用户决定修改 html 里的路径，不要擅自把文件挪回去（2026-11-05：`角色立绘/` 移到了 `红嫁衣角色立绘/角色立绘/`）。
 - **D-A6 版本管理**：项目使用 git，远程是 Monica11110702/NMC5369-Gender-media-project（2026-11-05 创建时是私有，2026-11-06 查到已是公开仓库并开了 GitHub Pages：https://monica11110702.github.io/NMC5369-Gender-media-project/），通过 HTTPS 推送（Classic Token 存在钥匙串里；2026-11-05）。只有在用户要求上传时才提交和推送。`.gitignore` 排除 zip 备份、Word 锁文件和 .DS_Store。
+
+## 音频（S）
+- **D-S1 红嫁衣音频**（2026-11-06，用户要求）：`红嫁衣音频/` 的文件按句子触发，配置在 `RB_MUSIC`、`RB_FX`、`RB_CUES`、`RB_SCENE_MUSIC`。开场页：开头恐怖音乐（不循环）。“Afternoon sunlight…” 起：红嫁衣-前期。“Why do I not even have the power…” 起：红嫁衣-逃跑。“Early the next morning.” 起：开头or婚礼开始的时候，到结尾。三段背景音乐循环，进入 What If 或离开故事时停止。音效：Your mother seems to be crying（母亲哭泣1）、You lower your head…（母亲哭泣2）、A horse-drawn carriage passes（马车声）、The teacup shatters on the floor（打碎碗）、You struggle with all your strength（女生尖叫）。
+- **D-S2 音频行为**（2026-11-06）：背景音乐切换时交叉淡化 1.2 秒。跳转、Skip、刷新都按当前位置决定音乐，同一首不重头播。母亲哭泣1、2 播放时压低音乐（到 20%、50%），因为原音频很轻。刷新后浏览器要等玩家点一下才出声。Mohini 线没有音频。音量是按响度测量定的。2026-11-06 用户试听后确认音量和时机可以。
 
 ## 五、工程流程（P）
 - **D-P1 补丁方式**：先备份 → 用 Python 脚本精确替换（断言替换处只出现一次）→ 断言用到的剧情文字在剧本中逐字存在。
