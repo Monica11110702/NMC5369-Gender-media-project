@@ -329,16 +329,16 @@ def main():
     if not missing:
         rep.add("PASS", "6 资源文件", f"{len(refs)} 个引用的文件都存在")
 
-    # 6b. 红嫁衣音频：文件存在，触发句逐字来自剧本
-    audio_lines = [l for l in html_src.split("\n") if l.startswith(("const RB_MUSIC=", "const RB_FX=", "const RB_CUES="))]
-    if len(audio_lines) == 3:
-        names = [n for l in audio_lines[:2] for n in re.findall(r"\['([^']+)',", l)]
-        lost = [n for n in names if not os.path.isfile(os.path.join(ROOT, "红嫁衣音频", n + ".MP3"))]
-        whole = norm(" ".join(docx_paras(script)))
-        cues = re.findall(r"\[['\"](.+?)['\"],'\w+'\]", audio_lines[2])
-        off = [c for c in cues if norm(c) not in whole]
+    # 6b. 音频：文件存在，触发句逐字来自剧本（红嫁衣对 docx，Mohini 对 PDF）
+    lines = {l.split("=")[0][6:]: l for l in html_src.split("\n") if l.startswith(("const RB_MUSIC=", "const RB_FX=", "const RB_CUES=", "const MH_CUES="))}
+    if len(lines) == 4:
+        names = [n for k in ("RB_MUSIC", "RB_FX") for n in re.findall(r"\['([^']+)',", lines[k])]
+        lost = [n for n in names if not os.path.isfile(os.path.join(ROOT, n + ".MP3"))]
         rep.add("FAIL" if lost else "PASS", "6b 音频", f"音频文件 {len(names)} 个，缺失：{lost or '无'}")
-        rep.add("FAIL" if off or not cues else "PASS", "6b 音频", f"触发句 {len(cues)} 句，不在剧本：{off or '无'}")
+        for key, whole in (("RB_CUES", doc), ("MH_CUES", ptxt or "")):
+            cues = re.findall(r"\[['\"](.+?)['\"],'\w+'\]", lines[key])
+            off = [c for c in cues if norm(c) not in whole]
+            rep.add("FAIL" if off or not cues else "PASS", "6b 音频", f"{key} 触发句 {len(cues)} 句，不在剧本：{off or '无'}")
 
     # 7. 已确认约定（CSS/代码层面的守卫）
     guards = [

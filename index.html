@@ -140,25 +140,29 @@ for(const x of ss){if(cur&&!open(cur)&&cur.length+1+x.length>max){out.push(cur);
 // Keep the last two words together so a wrapped line never ends on one word (display only; story data stays verbatim).
 const rbGlue=t=>t.replace(/ (\S+)$/,'\u00a0$1');
 let rbFilmStop=null;
-// Red Bride audio: music and sounds start when the matching sentence appears on screen. Each entry: [file, volume, music level while it plays].
-const RB_MUSIC={open:['开头恐怖音乐',.6],pre:['红嫁衣-前期',1],esc:['红嫁衣-逃跑',.25],wed:['开头or婚礼开始的时候',.32]};
-const RB_FX={cry1:['母亲哭泣1',1,.2],cry2:['母亲哭泣2',1,.5],cart:['红嫁衣-马车声',.9],cup:['打碎碗',.9],scream:['女生尖叫',.8]};
+// Story audio: music and sounds start when the matching sentence appears on screen. Each entry: [file, volume, music level while it plays].
+const RB_MUSIC={open:['红嫁衣音频/开头恐怖音乐',.6],pre:['红嫁衣音频/红嫁衣-前期',1],esc:['红嫁衣音频/红嫁衣-逃跑',.25],wed:['红嫁衣音频/开头or婚礼开始的时候',.32],happy:['印度故事音频/开头快乐音乐',.6],flood:['印度故事音频/被舆论淹没',.6],leave:['印度故事音频/结尾出走',.9]};
+const RB_FX={cry1:['红嫁衣音频/母亲哭泣1',1,.2],cry2:['红嫁衣音频/母亲哭泣2',1,.5],cart:['红嫁衣音频/红嫁衣-马车声',.9],cup:['红嫁衣音频/打碎碗',.9],scream:['红嫁衣音频/女生尖叫',.8]};
 const RB_CUES=[['Afternoon sunlight falls across the courtyard.','pre'],['Why do I not even have the power to decide my own marriage?','esc'],['Early the next morning.','wed'],['Your mother seems to be crying.','cry1'],['You lower your head and keep washing','cry2'],['A horse-drawn carriage passes','cart'],['The teacup shatters on the floor.','cup'],['You struggle with all your strength','scream']];
-const RB_SCENE_MUSIC=[null,'pre','pre','esc','esc','wed','wed'];
-const rbClips={},rbClip=n=>rbClips[n]||(rbClips[n]=Object.assign(new Audio('红嫁衣音频/'+n+'.MP3'),{preload:'auto'}));
-let rbMusic=null,rbMusicKey=null,rbUnlocked=false;
+const MH_CUES=[['Jasmine is threaded into your hair.','happy'],['At the market, conversations stop when you approach.','flood'],['Mohini leaves the house before dawn,','leave']];
+const RB_SCENE_MUSIC=[null,'pre','pre','esc','esc','wed','wed'],MH_SCENE_MUSIC=[null,'happy','flood','flood','leave'];
+const rbClips={},rbClip=n=>rbClips[n]||(rbClips[n]=Object.assign(new Audio(n+'.MP3'),{preload:'auto'}));
+let rbMusic=null,rbMusicKey=null;const rbUnlocked={};
+// A real start cancels any unlock still waiting on a slow download, so that unlock cannot pause or unmute the clip later.
+const rbStartClip=a=>{a.unlocking=false;a.muted=false;a.play().catch(()=>{})};
 function rbFade(a,to,ms,done){clearInterval(a.fade);const from=a.volume,t0=performance.now();a.fade=setInterval(()=>{const k=Math.min(1,(performance.now()-t0)/ms);a.volume=from+(to-from)*k;if(k===1){clearInterval(a.fade);done&&done()}},40)}
 function rbBgm(key){key=key||null;if(key===rbMusicKey)return;const old=rbMusic;if(old)rbFade(old,0,1200,()=>{old.pause();old.currentTime=0});rbMusicKey=key;rbMusic=null;if(!key)return;
-const [n,vol]=RB_MUSIC[key],a=rbClip(n);a.loop=key!=='open';if(a!==old)a.currentTime=0;a.volume=a===old?a.volume:0;rbMusic=a;a.play().catch(()=>{});rbFade(a,vol,1200)}
-function rbFx(key){const [n,vol,duck]=RB_FX[key],a=rbClip(n);a.currentTime=0;a.volume=vol;a.onended=null;a.play().catch(()=>{});if(duck&&rbMusic){rbFade(rbMusic,RB_MUSIC[rbMusicKey][1]*duck,300);a.onended=rbUnduck}}
+const [n,vol]=RB_MUSIC[key],a=rbClip(n);a.loop=key!=='open';if(a!==old)a.currentTime=0;a.volume=a===old?a.volume:0;rbMusic=a;rbStartClip(a);rbFade(a,vol,1200)}
+function rbFx(key){const [n,vol,duck]=RB_FX[key],a=rbClip(n);a.currentTime=0;a.volume=vol;a.onended=null;rbStartClip(a);if(duck&&rbMusic){rbFade(rbMusic,RB_MUSIC[rbMusicKey][1]*duck,300);a.onended=rbUnduck}}
 function rbUnduck(){if(rbMusic)rbFade(rbMusic,RB_MUSIC[rbMusicKey][1],800)}
 function rbFxStop(){let ducked=false;Object.values(RB_FX).forEach(([n,,duck])=>{const a=rbClips[n];if(a&&!a.paused){a.pause();a.onended=null;ducked=ducked||!!duck}});if(ducked)rbUnduck()}
-const rbCue=t=>{if(state.who==='red')for(const [p,k] of RB_CUES)if(t.includes(p))RB_MUSIC[k]?rbBgm(k):rbFx(k)};
-const rbCueBgm=(beats,k)=>{for(const b of beats)for(const [p,c] of RB_CUES)if(RB_MUSIC[c]&&(b.line||b.end||'').includes(p))k=c;return k};
+const rbCues=()=>state.who==='red'?RB_CUES:MH_CUES;
+const rbCue=t=>{for(const [p,k] of rbCues())if(t.includes(p))RB_MUSIC[k]?rbBgm(k):rbFx(k)};
+const rbCueBgm=(beats,k)=>{for(const b of beats)for(const [p,c] of rbCues())if(RB_MUSIC[c]&&(b.line||b.end||'').includes(p))k=c;return k};
 // Works out the right music from the current position, so jumps, Skip and refresh land on the same track as playing through.
-function rbAudioSync(fm,s,rs){if(state.who!=='red')return rbBgm(null);const g=state.screen==='game';let k=g?RB_SCENE_MUSIC[state.idx]:'wed';if(g&&state.choice!==null&&s.film)k=rbCueBgm(s.film.beats,k);if(rs)k=rbCueBgm(fm.beats.slice(0,rs.done?rs.beat+1:rs.beat),k);if(k||rbMusicKey!=='open')rbBgm(k)}
+function rbAudioSync(fm,s,rs){const g=state.screen==='game',red=state.who==='red';let k=g?(red?RB_SCENE_MUSIC:MH_SCENE_MUSIC)[state.idx]:red?'wed':'leave';if(g&&state.choice!==null&&s.film)k=rbCueBgm(s.film.beats,k);if(rs)k=rbCueBgm(fm.beats.slice(0,rs.done?rs.beat+1:rs.beat),k);if(k==='flood'&&rbMusicKey==='happy'&&state.idx===2&&state.choice===null&&!rs)return;if(k||rbMusicKey!=='open')rbBgm(k)}
 // Browsers only allow sound after a click: resume after a refresh, and unlock the clips that later start from timers.
-function rbUnlock(){if(state.who!=='red')return;if(rbMusic&&rbMusic.paused&&!rbMusic.ended)rbMusic.play().catch(()=>{});if(rbUnlocked)return;rbUnlocked=true;[...Object.values(RB_MUSIC),...Object.values(RB_FX)].forEach(([n])=>{const a=rbClip(n);if(a===rbMusic||!a.paused)return;a.muted=true;a.play().then(()=>{if(a!==rbMusic){a.pause();a.currentTime=0}a.muted=false}).catch(()=>{a.muted=false})})}
+function rbUnlock(){if(!state.who)return;if(rbMusic&&rbMusic.paused&&!rbMusic.ended)rbMusic.play().catch(()=>{});if(rbUnlocked[state.who])return;rbUnlocked[state.who]=true;[...Object.values(RB_MUSIC),...Object.values(RB_FX)].filter(([n])=>n.startsWith(state.who==='red'?'红嫁衣':'印度')).forEach(([n])=>{const a=rbClip(n);if(a===rbMusic||!a.paused)return;a.unlocking=true;a.muted=true;a.play().then(()=>{if(a.unlocking){a.unlocking=false;a.pause();a.currentTime=0;a.muted=false}}).catch(()=>{if(a.unlocking){a.unlocking=false;a.muted=false}})})}
 document.addEventListener('click',rbUnlock);document.addEventListener('keydown',rbUnlock);
 function rbFilm(fm,s){rbFilmStop&&rbFilmStop();document.querySelector('.rb-film')?.remove();window.scrollTo(0,0);
 const fkey=(state.screen==='ending'?'end'+state.endingVariant+(state.rbFinal?'F':''):state.idx)+':'+state.choice,rs=state.fpos&&state.fpos.k===fkey&&(state.fpos.beat>0||state.fpos.line>0||state.fpos.done)?state.fpos:null;

@@ -73,7 +73,9 @@
 
 ## 音频（S）
 - **D-S1 红嫁衣音频**（2026-11-06，用户要求）：`红嫁衣音频/` 的文件按句子触发，配置在 `RB_MUSIC`、`RB_FX`、`RB_CUES`、`RB_SCENE_MUSIC`。开场页：开头恐怖音乐（不循环）。“Afternoon sunlight…” 起：红嫁衣-前期。“Why do I not even have the power…” 起：红嫁衣-逃跑。“Early the next morning.” 起：开头or婚礼开始的时候，到结尾。三段背景音乐循环，进入 What If 或离开故事时停止。音效：Your mother seems to be crying（母亲哭泣1）、You lower your head…（母亲哭泣2）、A horse-drawn carriage passes（马车声）、The teacup shatters on the floor（打碎碗）、You struggle with all your strength（女生尖叫）。
-- **D-S2 音频行为**（2026-11-06）：背景音乐切换时交叉淡化 1.2 秒。跳转、Skip、刷新都按当前位置决定音乐，同一首不重头播。母亲哭泣1、2 播放时压低音乐（到 20%、50%），因为原音频很轻。刷新后浏览器要等玩家点一下才出声。Mohini 线没有音频。音量是按响度测量定的。2026-11-06 用户试听后确认音量和时机可以。
+- **D-S2 音频行为**（2026-11-06）：背景音乐切换时交叉淡化 1.2 秒。跳转、Skip、刷新都按当前位置决定音乐，同一首不重头播。母亲哭泣1、2 播放时压低音乐（到 20%、50%），因为原音频很轻。刷新后浏览器要等玩家点一下才出声。音量是按响度测量定的。2026-11-06 用户试听后确认音量和时机可以。
+
+- **D-S3 Mohini 音频**（2026-11-06，用户要求）：`印度故事音频/` 三首都循环。“Jasmine is threaded into your hair.” 起：开头快乐音乐。“At the market, conversations stop when you approach.” 起：被舆论淹没。“Mohini leaves the house before dawn,” 起：结尾出走，到结尾。进入 What If 或离开故事时停止。音量 60%、60%、90%。从开头快乐音乐自然进入 Scene 3 时，等到 At the market 这句才切换；从进度条跳到 Scene 3 时直接放被舆论淹没。配置在 `RB_MUSIC`、`MH_CUES`、`MH_SCENE_MUSIC`。
 
 ## 五、工程流程（P）
 - **D-P1 补丁方式**：先备份 → 用 Python 脚本精确替换（断言替换处只出现一次）→ 断言用到的剧情文字在剧本中逐字存在。
