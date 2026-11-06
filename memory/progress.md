@@ -94,6 +94,15 @@
 50. 2026-11-06 Mohini Scene 2 的 A/B/C 都收束到 Scene2_05 上的 “The king's letters become less frequent.”：A 本来就在这张图上，只加文字；B、C 换图后显示（Place 为 Mohini's Family Home）。用自然速度走过三条，Continue 进入 Scene 3；控制台无报错。verify：133 段 Mohini 文字通过，19 FAIL / 13 WARN。备份文件为 scratchpad/index.before-s2-closing.html。
 51. 2026-11-06 Mohini Scene 3 改为图片序列：Scene3_01 → 02 → 03，然后在 03 上用 3 句 whisper（PDF 的 Suggested on-screen whisper overlays）一行行浮现，再出现 “How will you respond?” 和选项。A：Scene3_04；B：Scene3_05；C：Scene3_06（B、C 的 Place 为 The Village）。修复：三个选项时问题文字会被选项盖住，现在把文字上移（`many` 类，Scene 1–3 都生效）。A 是用户在预览里点的；B、C 用自然速度确认过结果文字和 Continue；Continue 进入 Scene 4；控制台无报错。Transition 还没加（等用户指定）。verify：146 段 Mohini 文字通过，19 FAIL / 19 WARN（新增的都是图片大小）。备份文件为 scratchpad/index.before-mohini-s3.html。
 52. 2026-11-06 上传 GitHub：Mohini 线（新剧情、Scene 1–3 图片序列）、首页第二篇文献和新排版、What If 修改。发布结果以 Actions 和线上页面为准（C-10）。
+53. **Mohini Scene 4 图片序列**（2026-11-06）：按用户对应做好开场（01→02→04→05，Mother/Mohini 对话在 04 上）和 A（06）/ B（07）/ C（08）。开头句裁成 “The king's final letter arrives.”，删掉 “The room is full…” 和 “It has never felt so lonely.”（D-T8）。B、C 的 Place 用 The Village，待确认。备份：scratchpad `index.before-mohini-s4.html`。
+54. **Mohini Scene 4 共同收尾**（2026-11-06，用户要求）：三个选项的结果之后都接 Scene4_10（无文字停留，Place 回到 Mohini's Family Home）→ Scene4_09（Time 改为 Before Dawn），文字是 PDF 的 Transition “Mohini leaves the house before dawn, uncertain whether she can remain in the village.”，然后进入 Scene 5。备份：scratchpad `index.before-mohini-s4-closing.html`。
+55. **Mohini Scene 5 图片序列**（2026-11-06）：开场 01（前两句）→ 02（其余旁白和问题）；A 03（Place The Palace）、B 05（Place 不变）、C 04（Place Village Market，Time Midday）。用户把 “The jasmine in your hair has dried.” 同时列在 01 和 02，剧本只有一句，目前只放在 01。备份：scratchpad `index.before-mohini-s5.html`。
+56. **Mohini Scene 5 渐黑**（2026-11-06，用户确认）：A、B、C 的结果文字读完后画面渐黑（`black`，和红嫁衣 Scene 6 A 相同），文字留在黑屏上，之后出现 Reveal the ending。备份：scratchpad `index.before-mohini-s5-fade.html`。
+57. **Mohini Final Scene 图片序列**（2026-11-06）：Ending_01（前三句）→ Ending_02_传说中的茉莉幽灵_正面恐怖版_v2（其余文字；用户先链接了普通版，随后纠正要用另一张）。ENDING UNLOCKED、引语和 Required note 依次显示，note 最后一句停留并出现 What if 和 Replay 按钮。Mohini 结局页的渲染分支增加了 film 支持。Mohini 整条线现在全部是图片序列。备份：scratchpad `index.before-mohini-final.html`。
+58. **Mohini 删句**（2026-11-06，用户要求）：见 D-T9。选项 C 现在只有 “A few neighbours listen. Others turn away.”；Final Scene 以引语收尾，What If 和 Replay 按钮出现在引语画面。备份：scratchpad `index.before-mohini-cuts.html`。
+59. **Mohini Scene 3 三句 whisper**（2026-11-06，用户要求）：底图换成 `主题图_社会等级与权力金字塔.png`，文字改成玫瑰红 `#e8877f`（`tone: "whisper"`，`.rb-line.whisper`），问题 “How will you respond?” 和选项也在这张图上。备份：scratchpad `index.before-mohini-s3-whispers.html`。
+60. **剧情文字不留单词行**（2026-11-06，用户要求）：见 D-L10，两条线都生效。按 375、1000、1280、1600 宽度测量全部 197 段旁白和 110 段对话，单词行都是 0。备份：scratchpad `index.before-no-orphans.html`。
+61. **上传 GitHub**（2026-11-06，用户要求）：Mohini Scene 4、5、Final Scene 的图片序列和其他改动一起上传。`红嫁衣音频/` 游戏没有用到，未上传。
 
 ## 待解决问题（需要用户决策）
 - [x] **Q1 剧本升级到 V3（剧情文字部分）**：2026-11-04 已同步；理论框见 Q3。
@@ -123,6 +132,9 @@
 - [x] **Q26 Mohini 的 Debate 01**：标题和选项要不要也按红嫁衣的改？
 - [ ] **Q27 Mohini 线**：Place/Time 名称是从 Setting 取的，需要确认；Scene 3 的 3 句 whisper overlays 是否做成画面效果；PDF 里 What If 的问题和解释与现在页面不同（现在页面是用户改过的版本）；PDF 结尾写的是 “Explore the Red Bride”，现在按钮是 “Explore the other story”。
 - [ ] **Q28 Mohini Scene 1 的 08**：选 B（拒绝）或 C 之后，收尾仍然是莫希妮和国王在莲池边约会的画面，和选项有落差。要保留吗？Attendant 要不要补立绘？
+- [ ] **Q29 Mohini Scene 4 的标签和收尾顺序**：共同收尾已加（10 → 09）。B、C 的 Place 用 The Village 是否可以？两张图的先后顺序是否满意？
+- [ ] **Q30 Mohini Scene 5**：C 的 Time 用 Midday、A 的 Place 用 The Palace 是否可以？“The jasmine…” 只放在 01 是否正确？
+- [ ] **Q31 Mohini Final Scene**：结尾引语现在和普通旁白同样样式，要不要做区别？Ending_02 普通版未使用，保留在文件夹里。
 - [ ] **Q12 Scene 2 A 的收尾**：A 线的 “You lie awake all night…” 仍然显示在 07B 厨房（白天）的底图上；要不要也换成 12 窗边未眠？
 - [x] **Q10 顶部信息栏**：2026-11-05 用户决定 Place 和 Time 都随画面变化（D-F11）。目前只有 Scene 2 A 的收尾改为 That Night。
 

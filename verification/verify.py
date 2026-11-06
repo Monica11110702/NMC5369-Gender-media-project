@@ -109,6 +109,10 @@ def pdf_text(path):
     return norm(r.stdout) if r.returncode == 0 else None
 
 
+# 用户确认的剧本裁剪（D-T8）：PDF 原句是 “The king's final letter arrives without a signature: there will be no marriage.”
+MOHINI_ALLOW = {"The king's final letter arrives."}
+
+
 def mohini_strings(x):
     if isinstance(x, str):
         yield x
@@ -230,7 +234,7 @@ def main():
         rep.add("WARN", "1b Mohini 文字 ⇄ PDF 剧本", f"无法检查：{merr or '读不到唯一的 PDF'}")
     else:
         items = [norm(t) for t in mohini_strings([mo.get("scenes"), mo.get("final")])]
-        bad = [t for t in items if t not in ptxt]
+        bad = [t for t in items if t not in ptxt and t not in MOHINI_ALLOW]
         rep.add("FAIL" if bad else "PASS", "1b Mohini 文字 ⇄ PDF 剧本", f"{len(bad)} 段不在 PDF 中，例如：{bad[0][:90]}" if bad else f"{len(items)} 段文字全部逐字出现在 PDF 中")
 
     # 2–4. 文字

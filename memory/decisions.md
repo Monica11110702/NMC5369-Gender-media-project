@@ -12,6 +12,8 @@
 - **D-T4 名牌**：Mother / Father / You 直接取自剧本；运粮男人的名牌是 “A Man”（用户确认）。剧本没有 `Name:` 时，可以用剧本正文里原样出现的称呼（例如 “A-Yue”“A-Yue’s father”），但不能自己起名（C-03）。
 - **D-T6 括号里的舞台提示**（如 “(Interrupting immediately)”）按 D-T2 处理，放进下一句台词对话框的舞台提示行，保留括号（2026-11-04 首次使用，具体呈现方式待 Q4 确认）。
 - **D-T7 Mohini 线**（2026-11-06，用户要求）：文字来源是 `印度故事/Mohini Pei- Summary (1).pdf`，格式和红嫁衣的卡片页相同（Place/Stage/Time 栏、打字机、底部选项、结果另起一页）。只放 PDF 标为 on-screen 的内容，以及 Dialogue、选项和结局。Transition、Visual and audio cues、Intersectional significance 是制作说明，不显示。on-screen question 放在正文最后一段（`rb-em`）。Place/Time 取自每幕的 Setting。PDF 里是直引号，按原文保留。不再使用旧的数值条和 Berlant 理论框。例外：用户指定 Scene 1 的 Transition 第一句 “The palace becomes a recurring presence in Mohini's life.” 在三个选项之后都显示；Scene 2 的 “The king's letters become less frequent.” 同样如此。规律：每幕三个选项都收束到 Transition 的第一句和用户指定的底图。Scene 3 及之后由用户逐幕指定。
+- **D-T8 Mohini Scene 4 裁剪**（2026-11-06，用户要求）：开头一句只保留 “The king's final letter arrives.”（PDF 原句后半 “without a signature: there will be no marriage.” 删除，信上的图已写明），`verify.py` 的 `MOHINI_ALLOW` 白名单里有这一句；“Your father has barred the gate, hoping the gossip will pass.” 之后的 “The room is full of people who love you.” 和 “It has never felt so lonely.” 删除。三个选项之后共用 PDF 的 Transition 句作收尾，配 Scene4_10 和 Scene4_09。
+- **D-T9 Mohini 删句**（2026-11-06，用户要求）：Scene 5 选项 C 删掉 “Your friend remembers every word, even when the public story changes.”；Final Scene 删掉 “ENDING UNLOCKED: The Woman the Village Forgot” 和 PDF 标为 Required on-screen note 的说明文字。Final Scene 现在以引语 “He returned to his palace…” 结尾。
 - **D-T5 剧本路由提示不显示**：“→ Proceed to Scene 6”“Only players who chose…” 这类提示只用于分支逻辑，不作为文字显示给玩家。
 
 ## 二、页面布局（L）
@@ -35,6 +37,7 @@
   - Debate 03 的 inter 解释：红嫁衣写 “money and education”，这个措辞由 Claude 改写，用户同意修改、但还没看过具体文字；Mohini 保持 “money, community ties and recognition”。
 - **D-L8 第二篇文献**（2026-11-06，用户要求）：首页 Phoenix 卡片下面加 Nina Lykke (2010) 卡片，文字是用户原话；页脚加 “Second theoretical source: Lykke, N. (2010)…”。页脚里的出版社 Routledge 和章节标题的句首大写格式是 Claude 补的，用户还没确认。
 - **D-L9 首页文献排版**（2026-11-06，用户要求）：说明文字横向铺满，两篇文献卡片在下方并排；手机宽度下上下排列。
+- **D-L10 不留单词行**（2026-11-06，用户要求）：剧情文字换行时最后一行不能只有一个单词，也不能靠合并句子解决。旁白、问题和选项用 `text-wrap:balance`；旁白、对话、结尾文字显示时用 `rbGlue` 把最后两个单词用不换行空格连住（只影响显示，`data` 里的文字不变）。
 - **D-L4 结局与 Final Screen** 使用和剧情页相同的卡片排版；结局之后进入 Final Screen，再进入 What If（档案页已于 2026-11-06 按用户要求删除，见 D-L6）。
 
 ## 三、图片序列 / 镜头（F）——新增画面时默认按这套做
