@@ -2,7 +2,7 @@
 """红嫁衣 / MONST(H)ER 自动检查。
 
 用法（在项目根目录）:
-    python3 verification/verify.py                 # 默认检查 monst(h)er.html 对照 最新版本文案/ 下的英文 docx
+    python3 verification/verify.py                 # 默认检查 index.html 对照 最新版本文案/ 下的英文 docx
     python3 verification/verify.py --html X.html --script Y.docx
 
 检查项:
@@ -145,6 +145,11 @@ def films(red):
         for j, o in enumerate(s.get("outs") or []):
             if o:
                 yield f"scenes[{i}].outs[{j}]（{s.get('title')} · 选项{'AB'[j] if j < 2 else j}）", o
+    for k, e in (red.get("endings") or {}).items():
+        if e.get("film"):
+            yield f"endings.{k}.film", e["film"]
+    if (red.get("final") or {}).get("film"):
+        yield "final.film", red["final"]["film"]
 
 
 # ---------- 检查 ----------
@@ -171,7 +176,7 @@ class Report:
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--html", default=os.path.join(ROOT, "monst(h)er.html"))
+    ap.add_argument("--html", default=os.path.join(ROOT, "index.html"))
     ap.add_argument("--script")
     ap.add_argument("--all", action="store_true", help="列出全部不一致文字（默认每类最多 40 条）")
     ap.add_argument("--strict", action="store_true", help="最终交付：覆盖度不足也算 FAIL")
@@ -289,6 +294,12 @@ def main():
         ("const tail=", "Skip 只跳过对话、落在收尾旁白（C-05）"),
         ("const rbChunks=", "底图上的旁白按句子分组显示（D-F10）"),
         ("const RB_SAVE=", "刷新后停留在原页面（D-L5）"),
+        ("From an intersectional perspective, this game aims to help players understand", "开头段落是用户指定的文字（D-L6）"),
+        ("function renderWhatIf()", "结尾有 What If 页（D-L6）"),
+        ("function renderMethod()", "Debate 03 在结尾共用页（D-L7）"),
+        ("If she had received even a little education", "Debate 02 有 Educational background（D-L7）"),
+        ("go('reflect')", "What If 之后进入两个故事共用的页面（D-L6）"),
+        ("l.textContent.split(' · ')[0]+' · '+pl", "中间标签跟随 Place（D-F8）"),
     ]
     for needle, what in guards:
         rep.add("PASS" if needle in html_src else "FAIL", "7 已确认约定", what)
@@ -297,6 +308,10 @@ def main():
     corpus = norm(" ".join(s for _, s in story))
     level = "FAIL" if a.strict else "WARN"
     for sec, sents in script_sentences(paras).items():
+        if sec == "Opening":  # 2026-11-06 用户决定：Opening 只用全屏图像呈现，不显示文字（D-F16）
+            has = "00_开场_纸人围观冥婚.png" in html_src and os.path.exists(os.path.join(ROOT, "第一章场景", "00_开场_纸人围观冥婚.png"))
+            rep.add("PASS" if has else "FAIL", "8 覆盖度（剧本 → 游戏）", "Opening：只用全屏图像呈现，不显示文字（D-F16）")
+            continue
         miss = [x for x in sents if x not in corpus]
         if not miss:
             rep.add("PASS", "8 覆盖度（剧本 → 游戏）", f"{sec}：{len(sents)} 句全部在游戏中")

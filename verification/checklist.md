@@ -14,8 +14,7 @@
 ## B. 分支与流程
 - [ ] 【人工】每个选项都能走到下一幕：Prologue A/B → Scene 1 A/B → … → Scene 5 A/B → Scene 6 A/B。
 - [ ] 【人工】三个结局都能触发：Scene 5 选 B → Ending A；Scene 6 选 A → Ending B；Scene 6 选 B → Ending C。
-- [ ] 【人工】结局 → Final Screen → 档案页；“Replay this chapter” 和 “Leave this chapter” 都可以用。
-- [ ] 【人工】档案页的 “Your choices, remembered” 显示的是正常文字，不是乱码。
+- [ ] 【人工】结局 → Final Screen → What If → 共用页；“Replay this chapter” 和 “Leave this chapter” 都可以用。
 - [ ] 【人工】在图片序列中间、结尾画面、卡片页刷新，都能停在原处（D-L5）。
 
 ## C. 画面与交互（对照 decisions 的 L / F / A 系列）
